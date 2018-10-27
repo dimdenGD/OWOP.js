@@ -18,17 +18,6 @@ ojs.onload = function() {
     // Your code ...
 };
 ```
-OR if you want faster loading of script you can use this:
-
-```js
-var ojs = document.createElement('script');
-ojs.src = "https://raw.githack.com/dimdenGD/OWOP.js/master/OWOP.min.js";
-document.getElementsByTagName('head')[0].appendChild(ojs);
-
-ojs.onload = function() {
-    // Your code ...
-};
-```
 
 ### Use
 
