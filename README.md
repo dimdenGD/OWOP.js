@@ -102,31 +102,38 @@ OWOP.windowSys.addWindow(new OWOP.windowSys.class.window('Test Window', {}, func
 
 ### Chat
 
-You can get the last message WITHOUT nicknamae:
+You can get the last message WITHOUT nickname:
+
 `OJS.chat.lastMessage()` - *returns "Test Message"*.
 
 You can get the last message WITH nickname:
+
 `OJS.chat.lastMessageFull()` - *returns "[12932] dimden: Test Message"*.
 
 You can get first message:
+
 `OJS.chat.firstMessage()` - *returns "[Server] Joined world: "main", your ID is: 12932!"*.
 
 You can send message to chat:
+
 `OJS.chat.sendMessage(Message)`
 *Example:*
 ```js
 OJS.chat.sendMessage("Test Msg");
 ```
 You can send LOCAL message:
+
 `OJS.chat.localMessage(Message);`
 *Example:*
 ```js
 OJS.chat.localMessage("Test Msg");
 ```
 You can clear chat:
+
 `OJS.chat.clearChat()` - *chat will be cleared*.
 
 You can get the message that will be sended:
+
 `OJS.chat.getSendMessage()`
 *Example how to create your own commands:*
 ```js
