@@ -82,9 +82,13 @@ OJS.rank.set("NONE", 5) // Now NONE rank have 5 id
 ### Windows
 
 You can get all windows:
+
 `OJS.window.all()` - *returns object with all windows*.
+
 You can delete window:
+
 `OJS.window.delete(windowTitle)`
+
 *Example:*
 ```js
 OJS.window.delete("OWOP Radio"); // OWOP Radio will be deleted
