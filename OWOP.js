@@ -22,37 +22,19 @@ player: {
     return OWOP.player.pallete;
   },
 },
-
+  /* RANK */
 rank: {
-  get: {
-  admin: function() {
-    return OWOP.RANK.ADMIN;
+  create: function (rankName, id) {
+    return OWOP.RANK[`${rankName}`] = id;
+},
+  get: function (rankName) {
+    return OWOP.RANK[`${rankName}`];
   },
-  mod: function() {
-    return OWOP.RANK.MODERATOR;
-  },
-  user: function() {
-    return OWOP.RANK.USER;
-  },
-  none: function() {
-    return OWOP.RANK.NONE;
+  set: function (rankName, id) {
+    return OWOP.RANK[`${rankName}`] = id;
   }
 },
-  set: {
-  admin: function(rank) {
-    return OWOP.RANK.ADMIN = rank;
-  },
-  mod: function(rank) {
-    return OWOP.RANK.MODERATOR = rank;
-  },
-  user: function(rank) {
-    return OWOP.RANK.USER = rank;
-  },
-  none: function() {
-    return OWOP.RANK.NONE = rank;
-  }
-}
-},
+  /* WINDOW */
 window: {
   all: function() {
     return OWOP.windowSys.windows;
@@ -61,6 +43,7 @@ window: {
     OWOP.windowSys.windows[`${window}`].close()
   }
 },
+  /* CHAT */
 chat: {
   lastMessageFull: function() {
     return document.getElementById("chat-messages").lastChild.innerText;
@@ -84,7 +67,9 @@ chat: {
     OWOP.chat.clear();
   }
 },
+  /* LOCALSTORAGE */
 localStorage: localStorage,
+  /* WORLD */
 world: {
   setPixel: function(x,y,color) {
     return OWOP.world.setPixel(x,y,color,0);
@@ -117,8 +102,17 @@ world: {
   camera_y: function () {
     return OWOP.camera.y;
   }
+},
+disconnect: function () {
+  OWOP.chat.send("/pass disconnect");
+},
+reconnect: function () {
+  OWOP.chat.send("/pass reconnect");
+  function clickBTN() {document.getElementById("reconnect-btn").click()};
+  setTimeout(clickBTN,1500);
 }
 },
+  /* OPTIONS */
 options: {
   set: {
     defaultWorld: function (Name) {
@@ -190,5 +184,16 @@ options: {
       return OWOP.options.zoomLimitMin;
     },
   },
-}
+},
+  /* TOOl */
+tool: {
+  list: function() {
+    return OWOP.tool.allTools;
+  },
+  remove: function (tool) {
+    var element = document.getElementById(`tool-${tool}`);
+    element.parentNode.removeChild(element);
+  }
+},
+
 }
