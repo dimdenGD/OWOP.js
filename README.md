@@ -150,12 +150,14 @@ if(msg == "!test") {
 
 ### World
 You can set pixel:
+
 `OJS.world.setPixel(x, y, colourFromPallete)`
 *Example:*
 ```js
 OJS.world.setPixel(0,0,1);
 ```
 You can get pixel:
+
 `OJS.world.getPixel(x, y)` - *returns array with RGB*.
 
 ##### Coordinates
@@ -182,9 +184,11 @@ You can get camera coordinates:
 
 ##### Net
 You can disconnect:
+
 `OJS.world.disconnect()` - *Lost connection with server*.
 
 You can reconnect:
+
 `OJS.world.reconnect()`
 
 # Options
@@ -210,10 +214,15 @@ You can reconnect:
 `OJS.options.get.zoomMin()`;
 
 # Tool
+
 You can get toolset of player:
+
 `OJS.tool.list()` - *returns object with tools*.
+
 You can delete tool:
+
 `OJS.tool.remove(tool)`
+
 *Example:*
 ```js
 OJS.tool.remove("cursor") // Cursor will be deleted
