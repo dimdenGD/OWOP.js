@@ -11,7 +11,7 @@ For many scripters it's really hard to found how to use the API of OWOP. This is
 To install the lib you need just to paste this to your script.
 ```js
 var ojs = document.createElement('script');
-ojs.src = "https://raw.githubusercontent.com/dimdenGD/OWOP.js/master/OWOP.js";
+ojs.src = "https://raw.githack.com/dimdenGD/OWOP.js/master/OWOP.js";
 document.getElementsByTagName('head')[0].appendChild(ojs);
 
 ojs.onload = function() {
