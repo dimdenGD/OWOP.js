@@ -43,8 +43,6 @@ Getting colour that player using right now:
 
 Getting tool list of player:
 `OJS.tool.list()` - *returns object with tools*.
-
-Getting pallete of player:
 ### Ranks
 
 
