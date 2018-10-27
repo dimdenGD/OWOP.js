@@ -19,25 +19,31 @@ ojs.onload = function() {
 };
 ```
 
-### Using
+### Use
 
-TO use the library you need to write *OJS*  tag.
+TO use the library you need to write **OJS** tag.
 
 
 ### Player
 
 Getting id of player:
 `OJS.player.id();` - *returns 15683*.
+
 Getting nickname of player:
 `OJS.player.name();` - *returns "dimden"*.
+
 Getting player rank:
 `OJS.player.rank()` - *returns 1*.
+
 Getting tool that player using right now:
 `OJS.player.tool()` - *returns "fill"*.
+
 Getting colour that player using right now:
 `OJS.player.color()` - *returns array [13, 54, 63]*.
+
 Getting tool list of player:
 `OJS.tool.list()` - *returns object with tools*.
+
 Getting pallete of player:
 ### Ranks
 
@@ -98,10 +104,13 @@ OWOP.windowSys.addWindow(new OWOP.windowSys.class.window('Test Window', {}, func
 
 You can get the last message WITHOUT nicknamae:
 `OJS.chat.lastMessage()` - *returns "Test Message"*.
+
 You can get the last message WITH nickname:
 `OJS.chat.lastMessageFull()` - *returns "[12932] dimden: Test Message"*.
+
 You can get first message:
 `OJS.chat.firstMessage()` - *returns "[Server] Joined world: "main", your ID is: 12932!"*.
+
 You can send message to chat:
 `OJS.chat.sendMessage(Message)`
 *Example:*
@@ -116,6 +125,7 @@ OJS.chat.localMessage("Test Msg");
 ```
 You can clear chat:
 `OJS.chat.clearChat()` - *chat will be cleared*.
+
 You can get the message that will be sended:
 `OJS.chat.getSendMessage()`
 *Example how to create your own commands:*
@@ -143,21 +153,30 @@ You can get pixel:
 
 ##### Coordinates
 You can get coordinates:
+
 `OJS.world.coordinates.x()`;
 `OJS.world.coordinates.y()`;
+
 You can get last coordinates:
+
 `OJS.world.coordinates.last_x()`;
 `OJS.world.coordinates.last_y()`;
+
 You can get tile coordinates:
+
 `OJS.world.coordinates.tile_x()`;
 `OJS.world.coordinates.tile_y()`;
+
 You can get camera coordinates:
+
 `OJS.world.coordinates.camera_x()`;
 `OJS.world.coordinates.camera_y()`;
+
 
 ##### Net
 You can disconnect:
 `OJS.world.disconnect()` - *Lost connection with server*.
+
 You can reconnect:
 `OJS.world.reconnect()`
 
