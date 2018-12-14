@@ -7,7 +7,7 @@ For many scripters it's really hard to found how to use the API of OWOP. This is
 
 # Documentation
 
-[WIKI](wiki)
+[WIKI](https://github.com/dimdenGD/OWOP.js/wiki)
 
 # License
 I'm not owner of ourworldofpixels.com. This library is free for use.
