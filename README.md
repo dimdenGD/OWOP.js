@@ -1,7 +1,8 @@
 # OWOP.js | OJS
 
 The library for using OWOP API in Node.JS!
-[![OJS](https://img.shields.io/badge/OJS-1.0.3-blue.svg)]
+
+![OJS](https://img.shields.io/badge/OJS-1.0.3-blue.svg)
 
 # Documentation
 
