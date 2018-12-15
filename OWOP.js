@@ -271,3 +271,5 @@ OJS = {
     }
   }
 };
+
+module.exports = {OJS};
