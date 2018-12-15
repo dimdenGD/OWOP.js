@@ -9,7 +9,7 @@
 
 const readline = require('readline');
 const fs = require('fs');
-
+var OJS = {
   RANKS: {
     ADMIN: 3,
     MODERATOR: 2,
@@ -269,6 +269,4 @@ const fs = require('fs');
       }
     }
   }
-
-
-module.exports = {RANKS,chat,interact,world,options,util};
+}
