@@ -18,10 +18,13 @@ ws.onopen = async function () {
   await OJS.chat.setNick('OJS Bot');
   await OJS.interact.controller();
 };
-ws.onmessage = function (data) {
-  msg = data.data;
-  OJS.chat.recvModifier(msg);
-  OJS.util.messageHandler(msg);
+ws.onmessage = function(data) {
+  OJS.chat.recvModifier(data.data)
+  OJS.util.messageHandler(data.data)
+};
+ws.onclose = function () {
+  console.log('[OWOP.js]: Disconnected.')
+  process.exit()
 }
 
 ```
