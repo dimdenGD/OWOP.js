@@ -19,9 +19,10 @@ await OJS.chat.setNick('dimden');
 await OJS.interact.input()
 };
 ws.onmessage = function(data) {
-OJS.chat.recvModifier(data.data)
+  OJS.chat.recvModifier(data.data)
+  OJS.util.messageHandler(data.data)
 };
 ws.onclose = function () {
-console.log('[OWOP.js]: Disconnected.')
-process.exit()
+  console.log('[OWOP.js]: Disconnected.')
+  process.exit()
 }
