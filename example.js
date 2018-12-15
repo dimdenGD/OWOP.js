@@ -15,7 +15,7 @@ fs.writeFileSync("OJS_LOCALSTORAGE.json",JSON.stringify(ls))}else{console.error(
 
 ws.onopen = async function () {
 await OJS.world.join('main');
-await OJS.chat.setNick('dimden');
+await OJS.chat.setNick('OJS Bot');
 await OJS.interact.input()
 };
 ws.onmessage = function(data) {
