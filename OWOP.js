@@ -10,7 +10,6 @@
 const readline = require('readline');
 const fs = require('fs');
 
-OJS = {
   RANKS: {
     ADMIN: 3,
     MODERATOR: 2,
@@ -270,6 +269,6 @@ OJS = {
       }
     }
   }
-};
 
-module.exports = {OJS};
+
+module.exports = {RANKS,chat,interact,world,options,util};
