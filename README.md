@@ -1,3 +1,5 @@
+![OJSLogo](https://dimden.tk/OJS.png)
+
 # OWOP.js | OJS
 
 The library for using OWOP API in Node.JS!
