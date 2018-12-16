@@ -9,7 +9,7 @@
 
 const readline = require('readline');
 const fs = require('fs');
-var OJS = {
+OJS = {
   RANKS: {
     ADMIN: 3,
     MODERATOR: 2,
