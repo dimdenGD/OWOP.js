@@ -74,7 +74,7 @@ With this function you can easily set your bot nickname.
 *Example:*
 
 ```js
-OJS.chat.setNick('OJS Bot');
+OJS.chat.nick('OJS Bot');
 ```
 
 ### OJS.CHAT.TELL(ID, MSG)
