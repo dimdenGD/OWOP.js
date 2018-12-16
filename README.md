@@ -39,7 +39,7 @@ In the beginning of code we are making WS request with Origin header. After that
 
 # Installation
 
-As you see, there is `{OJS HERE}`. In this place you should paste OJS from file. And it's all! You installed OJS!
+As you see, there is `{OJS HERE}`. In this place you should paste OJS from [file](https://github.com/dimdenGD/OWOP.js/blob/master/OWOP.js). And it's all! You installed OJS!
 
 # Using
 
