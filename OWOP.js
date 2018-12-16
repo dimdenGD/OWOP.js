@@ -129,6 +129,7 @@ OJS = {
       OJS.player.y = 16*y;
     },
     setPixel: async function (x, y, color) {
+    OJS.world.move(x, y)
     var array = new ArrayBuffer(11);
     var dv = new DataView(array);
     await dv.setInt32(0, x, true);
@@ -140,6 +141,7 @@ OJS = {
     OJS.player.color = [color[0], color[1], color[2]];
   },
     setChunk: function (x, y, rgb) {
+      if(OJS.player.rank == OJS.RANKS.ADMIN) {
       var array = new ArrayBuffer(13);
       var dv = new DataView(array);
       dv.setInt32(0, x, true);
@@ -148,6 +150,7 @@ OJS = {
       dv.setUint8(9, rgb[1]);
       dv.setUint8(10, rgb[2]);
       ws.send(array);
+      } else {console.error("[ERROR]: You are not admin!")}
     },
     setColor: function (rgb) {
       var array = new ArrayBuffer(12);
