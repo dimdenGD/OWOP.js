@@ -226,7 +226,7 @@ OJS.world.leave()
 
 ### OJS.WORLD.MOVE(X, Y)
 
-This will move your bot cursor. *(Not tileXY, it's worldXY!)*
+This will move your bot cursor.
 
 *Example:*
 
@@ -302,7 +302,7 @@ Returns Rank of bot.
 
 ### OJS.PLAYER.X
 
-Returns X of Bot *(worldX)*.
+Returns X of Bot
 
 *Example:*
 
@@ -312,7 +312,7 @@ OJS.player.x // 156
 
 ### OJS.PLAYER.Y
 
-Returns Y of Bot *(worldY)*.
+Returns Y of Bot
 
 *Example:*
 
