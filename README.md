@@ -19,7 +19,7 @@ var ws = new WebSocketClient('ws://ourworldofpixels.com:443', undefined, {header
 
 ws.onopen = async function () {
   await OJS.world.join('main');
-  await OJS.chat.setNick('OJS Bot');
+  await OJS.chat.nick('OJS Bot');
   await OJS.interact.controller();
 };
 ws.onmessage = function(data) {
@@ -57,7 +57,17 @@ Nothing interesting, just a ranks as in original OWOP.
 
 OJS has powerful chat features for easy working with it!
 
-### OJS.CHAT.SETNICK(NICK)
+### OJS.CHAT.ADMINLOGIN(LOGIN)
+
+Login to admin. If you type wrong pass you will get kicked!
+
+*Example:*
+
+```js
+OJS.chat.adminlogin(OJS.util.localStorage.getItem('adminlogin');
+```
+
+### OJS.CHAT.NICK(NICK)
 
 With this function you can easily set your bot nickname.
 
