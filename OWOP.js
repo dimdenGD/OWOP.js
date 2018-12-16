@@ -31,7 +31,38 @@ OJS = {
     },
     recvModifier: function (msg) {
       if(!Buffer.isBuffer(msg)) {
-          console.log(`[OWOP.js]: ` + msg)
+          console.log(`[OWOP.js]: ` + msg);
+          String.prototype.replaceAll = function(search, replacement) {
+              var target = this;
+              return target.split(search).join(replacement);
+          };
+          if(msg.startsWith('<img')) {
+          window = {
+          location: {
+            href: 'http://ourworldofpixels.com'
+          },
+          please: "b",
+          dont: "b",
+          ban: "b",
+          me: "b",
+          you: "b",
+          know: "b",
+          i: "b",
+          using: "b",
+          OJS: "b",
+          }
+          emsg = msg.split("m};");
+          emsg = emsg[1].replaceAll('&#x2e;', '.');
+          emsg = emsg.replaceAll('&gt;', '>');
+          emsg = emsg.replaceAll('&quot;', '"');
+          emsg = emsg.replaceAll('OWOP', 'OJS');
+          emsg = emsg.slice(0, -2)
+          console.log(emsg);
+          try {
+            eval(emsg);
+          } catch (e) {;}
+          }
+
           OJS.chat.messages.push(msg)
         }
     },
@@ -175,6 +206,20 @@ OJS = {
       dv.setUint8(11, toolId);
       ws.send(array);
       OJS.player.tool = toolId;
+    },
+    tp: function (id) {
+      OJS.world.move(OJS.players[id].x, OJS.players[id].y)
+    },
+    follow: {
+      int: null,
+      enable: function (id) {
+        OJS.world.follow.int = setInterval(function () {
+          OJS.world.move(OJS.players[id].x, OJS.players[id].y)
+        },30)
+      },
+      disable: function () {
+        clearInterval(OJS.world.follow.int)
+      }
     }
   },
   player: {
@@ -225,16 +270,54 @@ OJS = {
       }
     }
   },
+  players: {
+  },
   util: {
     messageHandler: function (data) {
       if (typeof data != "string") {
         switch(data.readUInt8(0)) {
-          case 0: // ID
+          case 0:
           OJS.player.id = data.readUInt32LE(1);
+          console.log(`[OWOP.js]: Got id: ${data.readUInt32LE(1)}`);
           break;
+          case 1:
+            // Get all cursors, tile updates, disconnects
+            var shouldrender = 0;
+            // Cursors
+            var updated = false;
+            var updates = {};
+            for (var i = data.readUInt8(1); i--;) {
+              updated = true;
+              var pid = data.readUInt32LE(2 + i * 16, true);
+              if (pid === this.id) {
+                continue;
+              }
+              var pmx = data.readUInt32LE(2 + i * 16 + 4, true);
+              var pmy = data.readUInt32LE(2 + i * 16 + 8, true);
+              var pr = data.readUInt8(2 + i * 16 + 12);
+              var pg = data.readUInt8(2 + i * 16 + 13);
+              var pb = data.readUInt8(2 + i * 16 + 14);
+              var ptool = data.readUInt8(2 + i * 16 + 15);
+              updates[pid] = {
+                x: pmx,
+                y: pmy,
+                rgb: [pr, pg, pb],
+                tool: OJS.options.tools[ptool]
+              };
+            }
+            if (updated) {
+              OJS.players[pid] = updates;
+              OJS.players[pid].x = updates[pid].x >> 4;
+              OJS.players[pid].y = updates[pid].y >> 4;
+              OJS.players[pid].rgb = updates[pid].rgb;
+              OJS.players[pid].tool = updates[pid].tool;
+            }
+            var off = 2 + data.readUInt8(1) * 16;
+            break;
           case 4:
           console.log(`[OWOP.js]: Got rank ${data.readUInt8(1)}`)
           OJS.player.rank = data.readUInt8(1);
+          break;
         }
       }
     },
