@@ -115,15 +115,15 @@ OJS = {
     move: function (x, y) {
       var array = new ArrayBuffer(12);
       var dv = new DataView(array);
-      dv.setInt32(0, x, true);
-      dv.setInt32(4, y, true);
+      dv.setInt32(0, 16*x, true);
+      dv.setInt32(4, 16*y, true);
       dv.setUint8(8, OJS.player.color[0]);
       dv.setUint8(9, OJS.player.color[1]);
       dv.setUint8(10, OJS.player.color[2]);
       dv.setUint8(11, OJS.player.tool);
       ws.send(array);
-      OJS.player.x = x;
-      OJS.player.y = y;
+      OJS.player.x = 16*x;
+      OJS.player.y = 16*y;
     },
     setPixel: async function (x, y, color) {
     var array = new ArrayBuffer(11);
@@ -178,9 +178,6 @@ OJS = {
     y: 0,
     color: [0, 0, 0],
     tool: 0,
-  },
-  players: {
-    list: {}
   },
   options: {
     class: null,
