@@ -107,6 +107,7 @@ This function made for handling messages. You need to put it to `on_message`.
 ws.onmessage = function (data) {
     msg = data.data;
     OJS.chat.recvModifier(msg);
+    OJS.util.messageHandler(msg):
 }
 ```
 
