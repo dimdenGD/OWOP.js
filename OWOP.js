@@ -122,10 +122,11 @@ OJS = {
       dv.setUint8(10, OJS.player.color[2]);
       dv.setUint8(11, OJS.player.tool);
       ws.send(array);
-      OJS.player.x = 16*x;
-      OJS.player.y = 16*y;
+      OJS.player.x = x;
+      OJS.player.y = y;
     },
     setPixel: async function (x, y, color) {
+    OJS.world.move(x, y)
     var array = new ArrayBuffer(11);
     var dv = new DataView(array);
     await dv.setInt32(0, x, true);
