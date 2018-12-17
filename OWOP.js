@@ -228,7 +228,7 @@ class OJS extends EventEmitter {
           await dv.setUint8(10, color[2]);
           await ws.send(array);
           OJS.player.color = [color[0], color[1], color[2]];
-        },options.tickAmount)
+        },options.tickAmount || 20)
     },
       setChunk: function (x, y, rgb) {
         if(OJS.player.rank == OJS.RANKS.ADMIN) {
