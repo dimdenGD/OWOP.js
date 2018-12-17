@@ -266,6 +266,15 @@ class OJS extends EventEmitter {
         ws.send(array);
         OJS.player.tool = toolId;
       },
+      clearChunk = function clearChunk(x, y) {
+        if(OJS.player.rank == OJS.RANKS.ADMIN) {
+        var array = new ArrayBuffer(9);
+        var dv = new DataView(array);
+        dv.setInt32(0, x, true);
+        dv.setInt32(4, y, true);
+        ws.send(array);
+        } else {console.error("[ERROR]: You are not admin!")}
+      },
       tp: function (id) {
         try {
         OJS.world.move(OJS.players[id].x, OJS.players[id].y)
