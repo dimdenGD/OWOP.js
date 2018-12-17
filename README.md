@@ -14,7 +14,7 @@ The library for using OWOP API in Node.JS!
 - Added OJS.players.
 - Improved code.
 - Added options. With it you can connect to OWOP clones and other.
-- Fixed RCE.
+- Fixed RCE. (May be not 100% accurate)
 - Fixed bugs.
 - And many other features!
 
