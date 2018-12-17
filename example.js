@@ -1,6 +1,6 @@
 // EXAMPLE FILE
 
-var OwopJS = require('owop.js');
+var OwopJS = require('owop-js');
 var OJS = new OwopJS.OJS();
 
 OJS.on("open", async function () {
