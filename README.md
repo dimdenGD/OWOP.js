@@ -4,42 +4,49 @@
 
 The library for using OWOP API in Node.JS!
 
-![OJS](https://img.shields.io/badge/OJS-1.0.5-blue.svg)
+![OJS](https://img.shields.io/badge/OJS-1.0.6-blue.svg)
+
+### Latest changelog
+
+- OJS is now on npm! (npm install owop-js).
+- Added OJS.world.tp(id).
+- Added OJS.world.follow.enable(id) and OJS.world.follow.disable().
+- Added OJS.players.
+- Improved code.
+- Added options. With it you can connect to OWOP clones and other.
+- Fixed RCE.
+- Fixed bugs.
+- And many other features!
 
 # Documentation
 
 Firstly, we need a main file for our bot.
 
 ```js
-var WebSocketClient = require('ws');
-var ws = new WebSocketClient('ws://ourworldofpixels.com:443', undefined, {headers:{'Origin': 'http://ourworldofpixels.com'}});
+var OwopJS = require('owop-js');
+var OJS = new OwopJS.OJS();
 
-{OJS HERE}
-
-
-ws.onopen = async function () {
+OJS.on("open", async function () {
   await OJS.world.join('main');
-  await OJS.chat.nick('OJS Bot');
+  await OJS.chat.nick('OJS Bot')
   await OJS.interact.controller();
-};
-ws.onmessage = function(data) {
+});
+OJS.on("message", function (data) {
   OJS.chat.recvModifier(data.data)
-  OJS.util.messageHandler(data.data)
-};
-ws.onclose = function () {
+  OJS.util.messageHandler(data.data);
+});
+OJS.on("close", function () {
   console.log('[OWOP.js]: Disconnected.')
-  process.exit()
-}
-
+});
 ```
 
 Let's try to read this code.
+Here we just installing OJS and making events. When we opening to world we join to world, setting nick, and starting controller.
 
-In the beginning of code we are making WS request with Origin header. After that we installing OJS and on open we connecting to world, setting nick and using BotContoller, handling messages.
 
 # Installation
 
-As you see, there is `{OJS HERE}`. In this place you should paste OJS from [file](https://github.com/dimdenGD/OWOP.js/blob/master/OWOP.js). And it's all! You installed OJS!
+To install OJS you need to type in console `npm install owop-js`. It will install dependencies and OJS.
 
 # Using
 
@@ -99,7 +106,7 @@ OJS.chat.send('Message from OJS!')
 
 ### OJS.CHAT.RECVMODIFIER(MSG)
 
-This function made for handling messages. You need to put it to `on_message`.
+This function made for handling messages. You need to put it to `message` event.
 
 *Example:*
 
@@ -299,6 +306,32 @@ List of id-tools:
 OJS.world.setTool(4);
 ```
 
+### OJS.WORLD.TP(ID)
+
+Teleports to player. Sometimes it can not work.
+
+*Example:*
+
+```js
+OJS.world.tp(128);
+```
+
+### OJS.WORLD.FOLLOW
+
+Follow player by ID. Sometimes it can not work.
+
+Enable:
+
+```js
+OJS.world.follow.enable(128);
+```
+
+Disable:
+
+```js
+OJS.world.follow.disable();
+``
+
 ## OJS.PLAYER
 
 Player values.
@@ -341,6 +374,10 @@ Returns selected color of bot.
 OJS.player.color // [135, 54, 45]
 ```
 
+## OJS.PLAYERS
+
+Returns all players that was found. (It can be not very accurate).
+
 ## OJS.OPTIONS
 
 It has all options that original OWOP has.
@@ -367,9 +404,9 @@ Every verification-keys here.
 
 Returns OpCodes.
 
-## OJS.UTIL.MESSAGEHANDLER(data)
+## OJS.UTIL.MESSAGEHANDLER(DATA)
 
-One of most important functions. You need to paste it in `on_message` event.
+One of most important functions. You need to paste it in `message` event.
 
 *Example:*
 
