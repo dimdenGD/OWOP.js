@@ -217,16 +217,18 @@ class OJS extends EventEmitter {
         OJS.player.y = 16*y;
       },
       setPixel: async function (x, y, color) {
-      OJS.world.move(x, y)
-      var array = new ArrayBuffer(11);
-      var dv = new DataView(array);
-      await dv.setInt32(0, x, true);
-      await dv.setInt32(4, y, true);
-      await dv.setUint8(8, color[0]);
-      await dv.setUint8(9, color[1]);
-      await dv.setUint8(10, color[2]);
-      await ws.send(array);
-      OJS.player.color = [color[0], color[1], color[2]];
+      setTimeout(async () => {
+          OJS.world.move(x, y)
+          var array = new ArrayBuffer(11);
+          var dv = new DataView(array);
+          await dv.setInt32(0, x, true);
+          await dv.setInt32(4, y, true);
+          await dv.setUint8(8, color[0]);
+          await dv.setUint8(9, color[1]);
+          await dv.setUint8(10, color[2]);
+          await ws.send(array);
+          OJS.player.color = [color[0], color[1], color[2]];
+        },options.tickAmount)
     },
       setChunk: function (x, y, rgb) {
         if(OJS.player.rank == OJS.RANKS.ADMIN) {
