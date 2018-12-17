@@ -50,6 +50,7 @@ To install OJS you need to type in console `npm install owop-js`. It will instal
 
 # Options
 
+If you don't set anything, OJS will run in default mode, and connect to original OWOP.
 When you require OJS you can set some options.
 
 *Example:*
