@@ -81,9 +81,17 @@ class OJS extends EventEmitter {
       tell: function (id, msg) {
         OJS.chat.send(`/tell ${id} ${msg}`)
       },
-      send: function(message) {
-        ws.send(message+OJS.options.misc.chatVerification)
-      },
+      send: function (str) {
+			if (str.length) {
+				//if (OJS.player.rank == OJS.RANKS.ADMIN || this.chatBucket.canSpend(1)) {
+					 ws.send(message+OJS.options.misc.chatVerification)
+					return true;
+				//} else {
+				//	console.log("[OWOP.js]: " + "Slow down! You\'re talking too fast!");
+				//	return false;
+				//} //TODO: Make chat buffer
+			}
+       },
       recvModifier: function (msg) {
         if(options.matrix != true) {
         if(!Buffer.isBuffer(msg)) {
