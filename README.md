@@ -48,6 +48,34 @@ Here we just installing OJS and making events. When we opening to world we join 
 
 To install OJS you need to type in console `npm install owop-js`. It will install dependencies and OJS.
 
+# Options
+
+When you require OJS you can set some options.
+
+*Example:*
+
+```js
+var OJS = new OwopJS.OJS({option: value});
+```
+
+## matrix
+
+VALUES: `true`.
+
+Just enjoy the messages from OWOP.
+
+`var OJS = new OwopJS.OJS({matrix: true});`
+
+## ws && origin
+
+You can connect to OWOP clones.
+If you set one of this options you need to set other too.
+
+*Example:*
+
+```js
+var OJS = new OwopJS.OJS({ws: "owopforfun.heroku.com", origin: "https://owoppa.netlify.com"});
+```
 # Using
 
 OJS has many features. Let's discover it here!
