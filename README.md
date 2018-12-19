@@ -4,19 +4,18 @@
 
 The library for using OWOP API in Node.JS!
 
-![OJS](https://img.shields.io/badge/OJS-1.0.6-blue.svg)
+![OJS](https://img.shields.io/badge/OJS-1.0.7-blue.svg)
 
 ### Latest changelog
 
-- OJS is now on npm! (npm install owop-js).
-- Added OJS.world.tp(id).
-- Added OJS.world.follow.enable(id) and OJS.world.follow.disable().
-- Added OJS.players.
-- Improved code.
-- Added options. With it you can connect to OWOP clones and other.
-- Fixed RCE. (May be not 100% accurate)
-- Fixed bugs.
-- And many other features!
+- Added sendModifier.
+- Added modLogin.
+- Added EventEmitter.
+- Deleted setChunk.
+- Added clearChunk.
+- Added protectChunk.
+- setPixel selecting colour from OJS.player.color if nothing selected.
+- Some fixes.
 
 # Documentation
 
@@ -81,6 +80,30 @@ var OJS = new OwopJS.OJS({ws: "ws://owopforfun.herokuapp.com", origin: "https://
 
 OJS has many features. Let's discover it here!
 
+## OJS.EVENTS.OWOP
+
+You can use some events like in original OWOP.
+
+List of events:
+```js
+{
+OJS.events.owop.connect: 0, // Triggers when you joining the world.
+OJS.events.owop.disconnect: 1, // Triggers when you leave the world.
+OJS.events.owop.id: 2, // Triggers when you get ID.
+OJS.events.owop.update: 3, // Triggers when players moved, changed, etc.
+OJS.events.owop.rank: 4, // Triggers when you get rank.
+OJS.events.owop.move: 5 // Triggers when you move.
+}
+```
+
+*Example use of events:*
+
+```js
+OJS.on(OJS.events.id, function(id) {
+console.log(`Got id: ${id}`);
+});
+```
+
 ## OJS.RANKS
 
 Nothing interesting, just a ranks as in original OWOP.
@@ -101,6 +124,16 @@ Login to admin. If you type wrong pass you will get kicked!
 
 ```js
 OJS.chat.adminlogin(OJS.util.localStorage.getItem('adminlogin');
+```
+
+### OJS.CHAT.MODLOGIN(LOGIN)
+
+Same as `OJS.chat.adminlogin()` but for mods.
+
+*Example:*
+
+```js
+OJS.chat.modlogin(OJS.util.localStorage.getItem('modlogin');
 ```
 
 ### OJS.CHAT.NICK(NICK)
@@ -137,6 +170,8 @@ OJS.chat.send('Message from OJS!')
 
 This function made for handling messages. You need to put it to `message` event.
 
+Also with this function you can make commands for your bot. It's really same as OWOP API, so I don't think I should show how you can make commands.
+
 *Example:*
 
 ```js
@@ -145,6 +180,29 @@ ws.onmessage = function (data) {
     OJS.chat.recvModifier(msg);
     OJS.util.messageHandler(msg):
 }
+```
+
+### OJS.CHAT.SENDMODIFIER(MSG);
+
+This function made for handling sendMessages.
+
+*Example making commands:*
+
+```js
+OJS.chat.sendModifier = (msg) => {
+if(msg == "!test") {
+  console.log('Test command.')
+} else {
+  ws.send(msg + OJS.options.misc.chatVerification)
+}
+}
+```
+
+```js
+> OJS.chat.send('!test')
+> Test command.
+> OJS.chat.send('Hi')
+> [OWOP.js]: [128] OJS Bot: Hi
 ```
 
 ### OJS.CHAT.FIRSTMESSAGE()
@@ -284,6 +342,13 @@ OJS.world.move(999, 999);
 ### OJS.WORLD.SETPIXEL(X, Y, COLOR)
 
 You can place pixels. *(tileXY)*
+Also if you don't type color (`OJS.world.setPixel(X, Y)`) then it will take color from `OJS.player.color`. So if you need to place many pixels with one color use:
+
+```js
+OJS.world.setColor([r, g, b]);
+// And after that
+OJS.world.setPixel(0,0);
+```
 
 *Example:*
 
@@ -291,15 +356,26 @@ You can place pixels. *(tileXY)*
 OJS.world.setPixel(0, 0, [0,0,0]);
 ```
 
-### OJS.WORLD.SETCHUNK(X,Y,RGB)
+### OJS.WORLD.CLEARCHUNK(X,Y)
 
-You can set chunks. (You need to be admin for that)
+You can clear chunks. (You need to be admin for that)
 
 *Example:*
 
 ```js
-OJS.world.setChunk(0,0,[0,0,0])
+OJS.world.clearChunk(0,0)
 ```
+
+### OJS.WORLD.PROTECTCHUNK(X,Y, NEWSTATE)
+
+You can protect chunks. (You need to be admin for that)
+
+*Example:*
+
+```js
+OJS.world.protectChunk(0, 0, 1)
+```
+
 
 ### OJS.WORLD.SETCOLOR(COLOR)
 
