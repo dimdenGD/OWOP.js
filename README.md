@@ -99,7 +99,7 @@ OJS.events.owop.move: 5 // Triggers when you move.
 *Example use of events:*
 
 ```js
-OJS.on(OJS.events.id, function(id) {
+OJS.on(OJS.events.owop.id, function(id) {
 console.log(`Got id: ${id}`);
 });
 ```
@@ -316,7 +316,6 @@ You can join world.
 
 ```js
 OJS.world.join('main');
-}
 ```
 
 ### OJS.WORLD.LEAVE()
