@@ -32,7 +32,7 @@ bot.on("ready", async () => {
   OJS.on("message", function (data) {
     OJS.chat.recvModifier(data.data)
     OJS.util.messageHandler(data.data);
-    if(!Buffer.isBuffer(data.data) && !data.data.startsWith('<') && !data.data.startsWith('Connected!') && !data.data.startsWith('[D]') && !data.data.startsWith('Got') && !data.data.startsWith('Nickname') && !data.data.startsWith('Server')) {
+    if(!Buffer.isBuffer(data.data) && !data.data.startsWith('<') && !data.data.startsWith('Connected!') && !data.data.startsWith('[D]') && !data.data.startsWith('Got') && !data.data.startsWith('DEV') && !data.data.startsWith('Nickname') && !data.data.startsWith('Server')) {
   bot.guilds.get(GuildId).channels.get(ChannelId).send(data.data)
   };
   });
