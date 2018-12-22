@@ -20,6 +20,7 @@ bot.on("ready", async () => {
   OJS.on("open", async function () {
     await OJS.world.join('main');
     await OJS.chat.nick('Gateway');
+    await OJS.world.move(666666666, 66666666);
     await OJS.interact.controller();
     // < COMMENT THIS CODE IF YOUR OWOP IS NOT ON HEROKU, AND YOU ARE NOT ADMIN
     OJS.chat.adminlogin('lolno');
