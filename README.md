@@ -74,7 +74,7 @@ If you set one of this options you need to set other too.
 *Example:*
 
 ```js
-var OJS = new OwopJS.OJS({ws: "ws://owopforfun.herokuapp.com", origin: "https://owoppa.netlify.com"});
+var OJS = new OwopJS.OJS({ws: "ws://104.237.150.24:1337", origin: "http://augustberchelmann.com/owop/"});
 ```
 # Using
 
