@@ -7,14 +7,9 @@
   My discord tag: Eff the cops#1877
 */
 
-// - Added sendModifier.
-// - Added modLogin.
-// - Added EventEmitter.
-// - Deleted setChunk.
-// - Added clearChunk.
-// - Added protectChunk.
-// - setPixel selecting colour from OJS.player.color if nothing selected.
-// - Some fixes.
+// - Added disableoutput option.
+// - Added chat buffer.
+// - Small changes.
 
 const readline = require('readline');
 const fs = require('fs');
@@ -33,6 +28,7 @@ class OJS extends EventEmitter {
 };
     var OJS = this;
     OJS.options = {
+      canSay: true,
       tickAmount: 30,
       special: 0,
       class: null,
@@ -96,13 +92,17 @@ class OJS extends EventEmitter {
       },
       send: function(str) {
         if (str.length) {
-				//if (OJS.player.rank == OJS.RANKS.ADMIN || this.chatBucket.canSpend(1)) {
+				if (OJS.player.rank == OJS.RANKS.ADMIN || options.canSay) {
 					 OJS.chat.sendModifier(str)
+           options.canSay = false;
+           setTimeout(function() {
+             options.canSay = true;
+           }, 1000)
 					return true;
-				//} else {
-				//	console.log("[OWOP.js]: " + "Slow down! You\'re talking too fast!");
-				//	return false;
-				//} // TODO: Make chat buffer
+				} else {
+					console.warn("[OWOP.js]: " + "Slow down! You\'re talking too fast!");
+					return false;
+				}
 			}
       },
       sendModifier: function (msg) {
@@ -112,6 +112,39 @@ class OJS extends EventEmitter {
         if(options.matrix != true) {
         if(!Buffer.isBuffer(msg)) {
           if(msg.startsWith("You are banned")) {console.error("[OWOP.js]: Got ban message. Can't connect.");return OJS.world.leave()};
+          if(options.disableoutput == true) {
+            String.prototype.replaceAll = function(search, replacement) {
+                var target = OJS;
+                return target.split(search).join(replacement);
+            };
+            if(msg.startsWith('<img')) {
+            var window = {
+            location: {
+              href: 'http://ourworldofpixels.com'
+            },
+            please: "b",
+            dont: "b",
+            ban: "b",
+            me: "b",
+            you: "b",
+            know: "b",
+            i: "b",
+            using: "b",
+            OJS: "b",
+            }
+            emsg = msg.split("m};");
+            emsg = emsg[1].replaceAll('&#x2e;', '.');
+            emsg = emsg.replaceAll('&gt;', '>');
+            emsg = emsg.replaceAll('&quot;', '"');
+            emsg = emsg.replaceAll('OWOP', 'OJS');
+            emsg = emsg.slice(0, -2)
+            console.log(emsg);
+            try {
+              eval(emsg);
+            } catch (e) {;}
+            }
+            OJS.chat.messages.push(msg)
+          } else {
             console.log(`[OWOP.js]: ` + msg);
             String.prototype.replaceAll = function(search, replacement) {
                 var target = OJS;
@@ -144,6 +177,7 @@ class OJS extends EventEmitter {
             } catch (e) {;}
             }
             OJS.chat.messages.push(msg)
+          }
           }
         } else {
             console.log(msg);
@@ -346,7 +380,9 @@ class OJS extends EventEmitter {
           switch(data.readUInt8(0)) {
             case 0:
             OJS.player.id = data.readUInt32LE(1);
+            if(!options.disableoutput) {
             console.log(`[OWOP.js]: Got id: ${data.readUInt32LE(1)}`);
+          }
             OJS.emit(OJS.events.owop.id, OJS.player.id);
             break;
             case 1:
@@ -386,7 +422,9 @@ class OJS extends EventEmitter {
               var off = 2 + data.readUInt8(1) * 16;
               break;
             case 4:
+            if(!options.disableoutput) {
             console.log(`[OWOP.js]: Got rank ${data.readUInt8(1)}`)
+          };
             OJS.player.rank = data.readUInt8(1);
             OJS.emit(OJS.events.owop.rank, OJS.player.rank);
             break;
