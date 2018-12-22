@@ -10,7 +10,7 @@ The library for using OWOP API in Node.JS!
 
 - Added disableoutput option.
 - Added chatbuffer.
-- Smal changes.
+- Small changes.
 
 # Documentation
 
