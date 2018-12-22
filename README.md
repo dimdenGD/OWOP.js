@@ -4,18 +4,13 @@
 
 The library for using OWOP API in Node.JS!
 
-[![OJS](https://img.shields.io/badge/OJS-1.0.7-blue.svg)](https://www.npmjs.com/package/owop-js)
+[![OJS](https://img.shields.io/badge/OJS-1.1.0-blue.svg)](https://www.npmjs.com/package/owop-js)
 
 ### Latest changelog
 
-- Added sendModifier.
-- Added modLogin.
-- Added EventEmitter.
-- Deleted setChunk.
-- Added clearChunk.
-- Added protectChunk.
-- setPixel selecting colour from OJS.player.color if nothing selected.
-- Some fixes.
+- Added disableoutput option.
+- Added chatbuffer.
+- Smal changes.
 
 # Documentation
 
@@ -64,6 +59,8 @@ VALUES: `true`.
 
 Just enjoy the messages from OWOP.
 
+*Example:*
+
 `var OJS = new OwopJS.OJS({matrix: true});`
 
 ## ws && origin
@@ -76,6 +73,17 @@ If you set one of this options you need to set other too.
 ```js
 var OJS = new OwopJS.OJS({ws: "ws://104.237.150.24:1337", origin: "http://augustberchelmann.com/owop/"});
 ```
+
+## disableoutput
+
+VALUES: `true`.
+
+You can disable console.logging messages.
+
+*Example:*
+
+`var OJS = new OwopJS.OJS({disableoutput: true});`
+
 # Using
 
 OJS has many features. Let's discover it here!
@@ -159,6 +167,7 @@ OJS.chat.tell(126, 'TellMessage from OJS!');
 ###  OJS.CHAT.SEND(MSG)
 
 Just send a message to chat!
+Don't forget that you have chatSend delay, and you can't send messages superfast.
 
 *Example:*
 
