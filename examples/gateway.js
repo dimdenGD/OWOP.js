@@ -34,7 +34,8 @@ bot.on("ready", async () => {
     OJS.chat.recvModifier(data.data)
     OJS.util.messageHandler(data.data);
     if(!Buffer.isBuffer(data.data) && !data.data.startsWith('You are') && !data.data.startsWith('FAIL') && !data.data.startsWith('<') && !data.data.startsWith('Connected!') && !data.data.startsWith('[D]') && !data.data.startsWith('Got') && !data.data.startsWith('DEV') && !data.data.startsWith('Nickname') && !data.data.startsWith('Server')) {
-  bot.guilds.get(GuildId).channels.get(ChannelId).send(data.data)
+      msg = data.data.replace(/<(?:.|\n)*?>/gm, "");
+  bot.guilds.get(GuildId).channels.get(ChannelId).send(msg)
   };
   });
   OJS.on("close", function () {
