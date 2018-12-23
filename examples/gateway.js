@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 var OwopJS = require('owop-js');
 var OJS = new OwopJS.OJS({ws: 'wss://cowop.herokuapp.com', origin: 'https://dimden.tk/'});
-const bot = new Discord.Client();
+const bot = new Discord.Client({disableEveryone: true});
 
 // Variables
 
