@@ -115,10 +115,14 @@ console.log(`Got id: ${id}`);
 ## OJS.RANKS
 
 Nothing interesting, just a ranks as in original OWOP.
+
 `ADMIN: 3`;
+
 `MODERATOR: 2`;
+
 `USER: 1`;
-`NONE: 0`
+
+`NONE: 0`;
 
 ## OJS.CHAT
 
@@ -131,7 +135,7 @@ Login to admin. If you type wrong pass you will get kicked!
 *Example:*
 
 ```js
-OJS.chat.adminlogin(OJS.util.localStorage.getItem('adminlogin');
+OJS.chat.adminlogin(OJS.util.localStorage.getItem('adminlogin'));
 ```
 
 ### OJS.CHAT.MODLOGIN(LOGIN)
@@ -141,7 +145,7 @@ Same as `OJS.chat.adminlogin()` but for mods.
 *Example:*
 
 ```js
-OJS.chat.modlogin(OJS.util.localStorage.getItem('modlogin');
+OJS.chat.modlogin(OJS.util.localStorage.getItem('modlogin'));
 ```
 
 ### OJS.CHAT.NICK(NICK)
