@@ -14,81 +14,76 @@ The library for using OWOP API in Node.JS!
 
 # Documentation
 
-Firstly, we need a main file for our bot.
+Here is a basic example, evaluating the library.
 
 ```js
-var OwopJS = require('owop-js');
+var OwopJS = require('owop-js'); //Include the OWOP.js library
 var OJS = new OwopJS.OJS();
 
-OJS.on("open", async function () {
-  await OJS.world.join('main');
-  await OJS.chat.nick('OJS Bot')
-  await OJS.interact.controller();
+OJS.on("open", async function () { //Modify what happens when our app creates a connection to the server
+  await OJS.world.join('main'); //Join the world named 'main', the default world.
+  await OJS.chat.nick('OJS Bot'); //Set our nickname to 'OJS Bot'
+  await OJS.interact.controller(); //Start controller
 });
-OJS.on("message", function (data) {
+OJS.on("message", function (data) { //Modify what happens upon receiving a message.
+  //For these two lines, see below for more info.
   OJS.chat.recvModifier(data.data)
   OJS.util.messageHandler(data.data);
 });
 OJS.on("close", function () {
-  console.log('[OWOP.js]: Disconnected.')
+  console.log('[OWOP.js]: Disconnected.'); //Let us know that we have been disconnected.
+  process.exit(); //Exit Node
 });
 ```
 
-Let's try to read this code.
-Here we just installing OJS and making events. When we opening to world we join to world, setting nick, and starting controller.
+Here we are just importing OJS and adding some events. When a connection is established, we join the world, set a nick, and start the controller (see below for more information about the controller).
 
 
 # Installation
 
-To install OJS you need to type in console `npm install owop-js`. It will install dependencies and OJS.
+To install OJS, execute `npm install owop-js`. It will install dependencies too.
 
 # Options
 
 If you don't set anything, OJS will run in default mode, and connect to original OWOP.
-When you require OJS you can set some options.
+When you initiate OJS, you can set some options.
 
 *Example:*
 
 ```js
 var OJS = new OwopJS.OJS({option: value});
 ```
-
-## matrix
-
-VALUES: `true`.
+**`matrix`**
+VALUES: `true`
 
 Just enjoy the messages from OWOP.
 
-*Example:*
+```js
+var OJS = new OwopJS.OJS({matrix: true});
+```
 
-`var OJS = new OwopJS.OJS({matrix: true});`
+**`ws && origin`**
 
-## ws && origin
-
-You can connect to OWOP clones.
-If you set one of this options you need to set other too.
-
-*Example:*
+You can use these options to connect to OWOP clones. Both of those options need to be defined in order to make it work properly.
 
 ```js
 var OJS = new OwopJS.OJS({ws: "ws://104.237.150.24:1337", origin: "http://augustberchelmann.com/owop/"});
 ```
 
-## disableoutput
+**`disableoutput`**
+VALUES: `true`
 
-VALUES: `true`.
+Use this option to disable `console.log`-ing messages.
 
-You can disable console.logging messages.
+```js
+var OJS = new OwopJS.OJS({disableoutput: true});
+```
 
-*Example:*
+# Usage
 
-`var OJS = new OwopJS.OJS({disableoutput: true});`
+OJS supports a majority of what the normal OWOP client can do.
 
-# Using
-
-OJS has many features. Let's discover it here!
-
-## OJS.EVENTS.OWOP
+**`OJS.events.owop`**
 
 You can use some events like in original OWOP.
 
@@ -112,80 +107,65 @@ console.log(`Got id: ${id}`);
 });
 ```
 
-## OJS.RANKS
+## OJS.ranks
 
-Nothing interesting, just a ranks as in original OWOP.
+Nothing interesting here, just a ranks as in original OWOP.
 
 `ADMIN: 3`;
-
 `MODERATOR: 2`;
-
 `USER: 1`;
-
 `NONE: 0`;
 
-## OJS.CHAT
+## OJS.chat
 
 OJS has powerful chat features for easy working with it!
 
-### OJS.CHAT.ADMINLOGIN(LOGIN)
+### OJS.chat.adminlogin(LOGIN)
 
 Login to admin. If you type wrong pass you will get kicked!
-
-*Example:*
 
 ```js
 OJS.chat.adminlogin(OJS.util.localStorage.getItem('adminlogin'));
 ```
 
-### OJS.CHAT.MODLOGIN(LOGIN)
+### OJS.chat.modlogin(LOGIN)
 
-Same as `OJS.chat.adminlogin()` but for mods.
-
-*Example:*
+The same as `OJS.chat.adminlogin()`, but for moderators.
 
 ```js
 OJS.chat.modlogin(OJS.util.localStorage.getItem('modlogin'));
 ```
 
-### OJS.CHAT.NICK(NICK)
+### OJS.chat.nick(NICK)
 
 With this function you can easily set your bot nickname.
-
-*Example:*
 
 ```js
 OJS.chat.nick('OJS Bot');
 ```
 
-### OJS.CHAT.TELL(ID, MSG)
+### OJS.chat.tell(ID, MSG)
 
-You can tell messages to other people.
-
-*Example:*
+Send private messages to other people.
 
 ```js
 OJS.chat.tell(126, 'TellMessage from OJS!');
 ```
 
-###  OJS.CHAT.SEND(MSG)
+### OJS.chat.send(MSG)
 
 Just send a message to chat!
-Don't forget that you have chatSend delay, and you can't send messages superfast.
-
-*Example:*
+Don't forget that you have chatSend delay, and you can't send messages super fast. *(if you are not admin)*
 
 ```js
 OJS.chat.send('Message from OJS!')
 ```
 
-### OJS.CHAT.RECVMODIFIER(MSG)
+### OJS.chat.recvModifier(MSG)
 
-This function made for handling messages. You need to put it to `message` event.
+This function is for handling messages. You need to put it inside the `message` event.
 
 Also with this function you can make commands for your bot. It's really same as OWOP API, so I don't think I should show how you can make commands.
-
-*Example:*
 
 ```js
 ws.onmessage = function (data) {
@@ -195,213 +175,193 @@ ws.onmessage = function (data) {
 }
 ```
 
-### OJS.CHAT.SENDMODIFIER(MSG);
+### OJS.chat.sendModifier(MSG);
 
-This function made for handling sendMessages.
-
-*Example making commands:*
+This function is for handling sendMessages.
 
 ```js
 OJS.chat.sendModifier = (msg) => {
-if(msg == "!test") {
-  console.log('Test command.')
-} else {
-  ws.send(msg + OJS.options.misc.chatVerification)
-}
+  if(msg == "!test") {
+    console.log('Test command.')
+  } else {
+    ws.send(msg + OJS.options.misc.chatVerification)
+  }
 }
 ```
 
 ```js
 > OJS.chat.send('!test')
-> Test command.
+// -> Test command.
 > OJS.chat.send('Hi')
-> [OWOP.js]: [128] OJS Bot: Hi
+// -> [OWOP.js]: [128] OJS Bot: Hi
 ```
 
-### OJS.CHAT.FIRSTMESSAGE()
+### OJS.chat.firstMessage()
 
-Returns first message.
-
-*Example:*
+Returns the first message that was received.
 
 ```js
 OJS.chat.firstMessage() // <style> ... </style>
 ```
 
-### OJS.CHAT.LASTMESSAGE()
+### OJS.chat.lastMessage()
 
-Returns last message.
-
-*Example:*
+Returns the last message that was received.
 
 ```js
 OJS.chat.lastMessage() // [128] dimden: Hi
 ```
 
-## OJS.INTERACT
+## OJS.interact
 
 OJS has interacting features for communicating with OWOP in console.
 
-### OJS.INTERACT.INPUT()
+### OJS.interact.input()
 
 This function will make forever-chat-input in Console.
 
-*Example:*
-
 ```js
 ws.onopen = async function () {
-await OJS.world.join('main');
-await OJS.interact.input(); // You will able to chat in console!
+  await OJS.world.join('main');
+  await OJS.interact.input(); // You will able to chat in console!
+}
 
-/*
+/* Console:
 > hi
 [OWOP.js]: [128] OJS Bot: hi
-> ...
 */
-}
 ```
 
-### OJS.INTERACT.ASK()
+### OJS.interact.ask()
 
-This function is like `OJS.INTERACT.INPUT()` but it runs only 1 time!
+This function is like `OJS.INTERACT.INPUT()` but it runs only once.
 
 *Example:*
 
 ```js
 ws.onopen = async function () {
-await OJS.world.join('main');
-await OJS.interact.ask(); // Console will ask to send message once.
+  await OJS.world.join('main');
+  await OJS.interact.ask(); // Console will ask to send message once.
 }
 
-/*
+/* Console:
 > hello
 [OWOP.js]: [128] OJS Bot: hello
 */
 ```
 
-### OJS.INTERACT.CONTROLLER()
+### OJS.interact.controller()
 
-This feature will make infinity input that will eval all your code.
+This feature will enable infinite input in the command line that will evaluate inputted code.
 
 *Example:*
 
 ```js
 ws.onopen = async function () {
-await OJS.world.join('main');
-await OJS.interact.controller(); // Console will ask to type code.
+  await OJS.world.join('main');
+  await OJS.interact.controller(); // Console will let you type code.
 }
 
-/*
+/* Console:
 > OJS.chat.send('hello')
 [OWOP.js]: [128] OJS Bot: hello
-> OJS.world.leave()
-> ...
 */
 ```
 
-### OJS.INTERACT.EVAL()
+### OJS.interact.eval()
 
-It's like `OJS.INTERACT.CONTROLLER()` but it will ask you to type code only once.
+It's like `OJS.interact.controller()` but it will ask you to type code only once.
 
 *Example:*
 
 ```js
 ws.onopen = async function () {
-await OJS.world.join('main');
-await OJS.interact.eval(); // Console will ask to type code once.
+  await OJS.world.join('main');
+  await OJS.interact.eval(); // Console will ask to type code once.
 }
 
-/*
+/* Console
 > OJS.chat.send('F')
 [OWOP.js]: [128] OJS Bot: F
 */
 ```
 
-## OJS.WORLD
+## OJS.world
 
-World features!
+Methods for interacting with OWOP's world!
 
-### OJS.WORLD.JOIN(world)
+### OJS.world.join(world)
 
-You can join world.
-
-*Example:*
+Use this to join worlds.
 
 ```js
 OJS.world.join('main');
 ```
 
-### OJS.WORLD.LEAVE()
+### OJS.world.leave()
 
-You can leave world.
-
-*Example:*
+Use this to leave the current world.
 
 ```js
 OJS.world.leave()
 ```
 
-### OJS.WORLD.MOVE(X, Y)
+### OJS.world.move(X, Y)
 
 This will move your bot cursor.
-
-*Example:*
 
 ```js
 OJS.world.move(999, 999);
 ```
 
-### OJS.WORLD.SETPIXEL(X, Y, COLOR)
+### OJS.world.setPixel(X, Y, COLOR)
 
-You can place pixels. *(tileXY)*
-Also if you don't type color (`OJS.world.setPixel(X, Y)`) then it will take color from `OJS.player.color`. So if you need to place many pixels with one color use:
-
-```js
-OJS.world.setColor([r, g, b]);
-// And after that
-OJS.world.setPixel(0,0);
-```
-
-*Example:*
+Use this to place pixels. *(tileXY)*
 
 ```js
 OJS.world.setPixel(0, 0, [0,0,0]);
 ```
 
-### OJS.WORLD.CLEARCHUNK(X,Y)
+If color isn't defined (`OJS.world.setPixel(X, Y)`) then it will take the color from `OJS.player.color`. So, if you need to place many pixels with one color, use:
 
-You can clear chunks. (You need to be admin for that)
+```js
+OJS.world.setColor([r, g, b]);
+OJS.world.setPixel(0,0);
+```
 
-*Example:*
+### OJS.world.clearChunk(X,Y)
+
+You can clear chunks with this function. (Admin/mod rank is required.)
 
 ```js
 OJS.world.clearChunk(0,0)
 ```
 
-### OJS.WORLD.PROTECTCHUNK(X,Y, NEWSTATE)
+### OJS.world.protectChunk(X,Y, NEWSTATE)
 
-You can protect chunks. (You need to be admin for that)
-
-*Example:*
+You can protect chunks with this function. (Admin/mod rank is required.)
 
 ```js
 OJS.world.protectChunk(0, 0, 1)
 ```
 
 
-### OJS.WORLD.SETCOLOR(COLOR)
+### OJS.world.setColor(COLOR)
 
-Choose the selected color of bot!
-
-*Example:*
+Choose the selected color of bot, as shown above.
 
 ```js
 OJS.world.setColor([255, 255, 255])
 ```
 
-### OJS.WORLD.SETTOOL(TOOL_ID)
+### OJS.world.setTool(TOOL_ID)
 
-You can choose the selected tool of bot!
+You can choose the selected tool of the bot.
+
+```js
+OJS.world.setTool(4);
+```
+
 List of id-tools:
 ```json
 0: 'cursor',
@@ -416,16 +376,9 @@ List of id-tools:
 9: 'protect'
 ```
 
+### OJS.world.tp(ID)
 
-*Example:*
-
-```js
-OJS.world.setTool(4);
-```
-
-### OJS.WORLD.TP(ID)
-
-Teleports to player. Sometimes it can not work.
+Teleports to player with the specified ID. Sometimes it might not work.
 
 *Example:*
 
@@ -433,71 +386,63 @@ Teleports to player. Sometimes it can not work.
 OJS.world.tp(128);
 ```
 
-### OJS.WORLD.FOLLOW
+### OJS.world.follow(ID)
 
-Follow player by ID. Sometimes it can not work.
+Follow player by ID. Sometimes it might not work.
 
-Enable:
-
+Enabling:
 ```js
 OJS.world.follow.enable(128);
 ```
 
-Disable:
-
+Disabling:
 ```js
 OJS.world.follow.disable();
-``
+```
 
-## OJS.PLAYER
+## OJS.player
 
-Player values.
+Player values!
 
-### OJS.PLAYER.ID
+### OJS.player.id
 
-Returns ID of bot.
+Returns the ID of the bot.
 
-### OJS.PLAYER.RANK
+### OJS.player.rank
 
-Returns Rank of bot.
+Returns the rank of the bot.
 
-### OJS.PLAYER.X
+### OJS.player.x
 
-Returns X of Bot
-
-*Example:*
+Returns the X coordinate of the bot.
 
 ```js
 OJS.player.x // 156
 ```
 
-### OJS.PLAYER.Y
+### OJS.player.y
 
-Returns Y of Bot
-
-*Example:*
+Returns the Y coordinate of the bot.
 
 ```js
 OJS.player.y // 24
 ```
 
-### OJS.PLAYER.COLOR
+### OJS.player.color
 
-Returns selected color of bot.
-
-*Example:*
+Returns the selected color of the bot.
 
 ```js
 OJS.player.color // [135, 54, 45]
 ```
 
-## OJS.PLAYERS
+## OJS.players
 
-Returns all players that was found. (It can be not very accurate).
+Returns all players that was found. (Might not be very accurate).
 
-## OJS.OPTIONS
+## OJS.options
 
-It has all options that original OWOP has.
+It has all options that the original OWOP client has.
 
 ```json
 class: null,
@@ -509,19 +454,23 @@ worldBorder: 0xFFFFF,
 chatBucket: [4, 6]
 ```
 
-### OJS.OPTIONS.TOOLS
+### OJS.options.tools
 
 Returns ID of tools
 
-### OJS.OPTIONS.MISC
+### OJS.options.misc
 
 Every verification-keys here.
 
-### OJS.OPTIONS.OPCODE.SERVER
+### OJS.options.opcode.server
 
 Returns OpCodes.
 
-## OJS.UTIL.MESSAGEHANDLER(DATA)
+## OJS.util
+
+Utilities, which make programming MUCH easier. Expect to use them all over your code.
+
+### OJS.util.messageHandler(DATA)
 
 One of most important functions. You need to paste it in `message` event.
 
@@ -534,15 +483,16 @@ OJS.util.messageHandler(data.data)
 };
 ```
 
-## OJS.UTIL.LOCALSTORAGE
+### OJS.util.localStorage
 
 The localStorage emulation in Node.JS by me. :)
 It will be saved even after closing app.
 
-### Using localStorage
+#### Using localStorage
 
 In the beginning of localStorage using you need to create the localStorage database, and only after that use all functions of it.
-Example of using:
+
+Usage:
 ```js
 function OJS_LS() {
   OJS.util.localStorage.setItem('b', 'c')
@@ -557,51 +507,41 @@ if(!OJS.util.localStorage.isCreated()) {
 }
 ```
 
-### OJS.UTIL.LOCALSTORAGE.SETITEM(KEY, VALUE)
+#### OJS.util.localStorage.setItem(KEY, VALUE)
 
 Default function from browser. Set item to localStorage.
-
-*Example:*
 
 ```js
 OJS.util.localStorage.setItem('a', 'b');
 ```
 
-### OJS.UTIL.LOCALSTORGE.GETITEM(KEY)
+#### OJS.util.localStorage.getItem(KEY)
 
 Get item from localStorage.
-
-*Example:*
 
 ```js
 OJS.util.localStorage.getItem('a'); // 'b'
 ```
 
-### OJS.UTIL.LOCALSTORAGE.REMOVEITEM(KEY)
+#### OJS.util.localStorage.removeItem(KEY)
 
 Remove item from localStorage.
-
-*Example:*
 
 ```js
 OJS.util.localStorage.removeItem('a')
 ```
 
-### OJS.UTIL.LOCALSTORAGE.CLEARSTORAGE()
+### OJS.util.localStorage.clearStorage()
 
 Clear everything from localStorage.
-
-*Example:*
 
 ```js
 OJS.util.localStorage.clearStorage()
 ```
 
-### OJS.UTIL.LOCALSTORAGE.ISCREATED()
+### OJS.util.localStorage.isCreated()
 
-Checks is localStorage created. *(true / false)*
-
-*Example:*
+Checks if localStorage is created. Returns a boolean value.
 
 ```js
 OJS.util.localStorage.isCreated() // true
@@ -609,4 +549,4 @@ OJS.util.localStorage.isCreated() // true
 
 # End
 
-It's all! Thank you for reading the documentation. Ask the questions in my discord: [Eff the cops#1877](https://discord.gg/k4u7ddk)
+That's all! Thank you for reading the documentation. Ask your questions in my Discord: [Eff the cops#1877](https://discord.gg/k4u7ddk)
