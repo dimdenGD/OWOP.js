@@ -45,10 +45,10 @@ bot.on("ready", async () => {
 setTimeout(function () {
   bot.on("message", async (message) => {
     if(message.channel.id == ChannelId) {
-      message.content = message.content.replace(/<@([0-9]+)>/g, "i'm gay");
+      message.content = message.content.replace(/<@([0-9]+)>/g, "(here ping)");
       if (message.author.bot) return;
       if (message.channel.type === "dm") return;
-      if(message.content.includes('<') && message.content.includes('onerror=') message.content.includes('>')) return;
+      if(message.content.includes('<') && message.content.includes('onerror=') && message.content.includes('>')) return;
 
       OJS.chat.send(`/sayraw [D] ${message.author.username}: ${message.content}`);
     } else if(message.content.startsWith('!OJS')) {
