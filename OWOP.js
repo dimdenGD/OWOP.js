@@ -7,9 +7,7 @@
   My discord tag: Eff the cops#1877
 */
 
-// - Added disableoutput option.
-// - Added chat buffer.
-// - Small changes.
+// - Bug fixed.
 
 const readline = require('readline');
 const fs = require('fs');
@@ -92,17 +90,7 @@ class OJS extends EventEmitter {
       },
       send: function(str) {
         if (str.length) {
-				if (OJS.player.rank == OJS.RANKS.ADMIN || options.canSay) {
-					 OJS.chat.sendModifier(str)
-           options.canSay = false;
-           setTimeout(function() {
-             options.canSay = true;
-           }, 1000)
-					return true;
-				} else {
-					console.warn("[OWOP.js]: " + "Slow down! You\'re talking too fast!");
-					return false;
-				}
+			 OJS.chat.sendModifier(str)
 			}
       },
       sendModifier: function (msg) {
