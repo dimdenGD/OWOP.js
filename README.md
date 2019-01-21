@@ -4,13 +4,14 @@
 
 The library for using OWOP API in Node.JS!
 
-[![OJS](https://img.shields.io/badge/OJS-1.1.2-blue.svg)](https://www.npmjs.com/package/owop-js)
+[![OJS](https://img.shields.io/badge/OJS-1.2.0-blue.svg)](https://www.npmjs.com/package/owop-js)
 
 ### Latest changelog
 
-- Added disableoutput option.
-- Added chatbuffer.
-- Small changes.
+- Added PixelQuota.
+- Added agents support!
+- Added colored messages.
+- Bugs fixed.
 
 # Documentation
 
@@ -79,6 +80,17 @@ Use this option to disable `console.log`-ing messages.
 var OJS = new OwopJS.OJS({disableoutput: true});
 ```
 
+**`agent`**
+
+You can set agent for bots.
+
+```js
+const SocksProxyAgent = require('socks-proxy-agent');
+const OWOP_js = require('owop-js');
+const Proxy = "192.168.1.1"; // Your proxies.
+/* ... */
+var OJS = new OWOP_js({agent: new SocksProxyAgent(Proxy)});
+```
 # Usage
 
 OJS supports a majority of what the normal OWOP client can do.
@@ -317,6 +329,7 @@ OJS.world.move(999, 999);
 ### OJS.world.setPixel(X, Y, COLOR)
 
 Use this to place pixels. *(tileXY)*
+PixelQuota for bots are same as for normal players!
 
 ```js
 OJS.world.setPixel(0, 0, [0,0,0]);
