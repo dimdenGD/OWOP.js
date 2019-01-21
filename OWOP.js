@@ -308,7 +308,7 @@ class OJS extends EventEmitter {
           dv.setInt32(0, x, true);
           dv.setInt32(4, y, true);
           ws.send(array);
-        } else { console.error("[ERROR]: You are not admin!") }
+        } else { console.error("[ERROR]: You are not admin!".color('red')) }
       },
       setColor: function(rgb) {
         var array = new ArrayBuffer(12);
@@ -342,13 +342,13 @@ class OJS extends EventEmitter {
           dv.setInt32(4, y, true);
           dv.setUint8(8, newState);
           ws.send(array);
-        } else { console.error("[ERROR]: You are not admin!") }
+        } else { console.error("[ERROR]: You are not admin!".color('red')) }
       },
       tp: function(id) {
         try {
           OJS.world.move(OJS.players[id].x, OJS.players[id].y)
         } catch (e) {
-          console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
+          console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)".color('yellow'))
         }
       },
       follow: {
@@ -359,7 +359,7 @@ class OJS extends EventEmitter {
               OJS.world.move(OJS.players[id].x, OJS.players[id].y)
             } catch (e) {
               clearInterval(OJS.world.follow.int);
-              console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
+              console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)".color('yellow'))
             }
           }, 30)
         },
@@ -447,19 +447,19 @@ class OJS extends EventEmitter {
             ls[key] = value;
             console.log(JSON.stringify(ls))
             fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
-          } else { console.error("OJS ERROR: LocalStorage is not created!") }
+          } else { console.error("OJS ERROR: LocalStorage is not created!".color('red')) }
         },
         getItem: function(key) {
           if (OJS.util.localStorage.isCreated()) {
             return JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"))[key]
-          } else { console.error("OJS ERROR: LocalStorage is not created!") }
+          } else { console.error("OJS ERROR: LocalStorage is not created!".color('red')) }
         },
         removeItem: function(key) {
           if (OJS.util.localStorage.isCreated()) {
             var ls = JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"));
             delete ls[key];
             fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
-          } else { console.error("OJS ERROR: LocalStorage is not created!") }
+          } else { console.error("OJS ERROR: LocalStorage is not created!".color('red')) }
         },
         clearStorage: function() {
           fs.writeFileSync("OJS_LOCALSTORAGE.json", '{}')
