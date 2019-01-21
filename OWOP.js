@@ -7,23 +7,38 @@
   My discord tag: Eff the cops#1877
 */
 
-// - Bug fixed.
+// - Added PixelQuota.
+// - Added agents support!
+// - Added colored messages.
+// - Bugs fixed.
 
 const readline = require('readline');
 const fs = require('fs');
 const EventEmitter = require('events');
 var WebSocketClient = require('ws');
 
+var Bckt = undefined;
+
+String.prototype.color = function(color) {
+  if (color == 'red') {
+    return '\x1b[31m' + this + '\x1b[0m';
+  } else if (color == "yellow") {
+    return '\x1b[33m' + this + '\x1b[0m';
+  } else if (color == 'green') {
+    return '\x1b[32m' + this + '\x1b[0m';
+  }
+}
+
 class OJS extends EventEmitter {
   constructor(options = {}) {
     super();
     Object.size = function(obj) {
-    var size = 0, key;
-    for (key in obj) {
+      var size = 0, key;
+      for (key in obj) {
         if (obj.hasOwnProperty(key)) size++;
-    }
-    return size;
-};
+      }
+      return size;
+    };
     var OJS = this;
     OJS.options = {
       canSay: true,
@@ -68,7 +83,7 @@ class OJS extends EventEmitter {
         }
       }
     };
-    if(Object.size(options) > 0) {console.log("\n[OWOP.js]: Using special options!\n");OJS.options.special = 1};
+    if (Object.size(options) > 0) { console.log("\n[OWOP.js]: Using special options!\n".color('yellow')); OJS.options.special = 1 };
     OJS.RANKS = {
       ADMIN: 3,
       MODERATOR: 2,
@@ -76,118 +91,119 @@ class OJS extends EventEmitter {
       NONE: 0
     };
     OJS.chat = {
-      nick: function (nick) {
+      nick: function(nick) {
         ws.send(`/nick ${nick}${OJS.options.misc.chatVerification}`)
       },
-      adminlogin: function (login) {
+      adminlogin: function(login) {
         ws.send(`/adminlogin ${login}${OJS.options.misc.chatVerification}`)
       },
-      modlogin: function (login) {
+      modlogin: function(login) {
         ws.send(`/modlogin ${login}${OJS.options.misc.chatVerification}`)
       },
-      tell: function (id, msg) {
+      tell: function(id, msg) {
         OJS.chat.send(`/tell ${id} ${msg}`)
       },
       send: function(str) {
         if (str.length) {
-			 OJS.chat.sendModifier(str)
-			}
-      },
-      sendModifier: function (msg) {
-      return ws.send(msg+OJS.options.misc.chatVerification)
-      },
-      recvModifier: function (msg) {
-        if(options.matrix != true) {
-        if(!Buffer.isBuffer(msg)) {
-          if(msg.startsWith("You are banned")) {console.error("[OWOP.js]: Got ban message. Can't connect.");return OJS.world.leave()};
-          if(options.disableoutput == true) {
-            String.prototype.replaceAll = function(search, replacement) {
-                var target = OJS;
-                return target.split(search).join(replacement);
-            };
-            if(msg.startsWith('<img')) {
-            var window = {
-            location: {
-              href: 'http://ourworldofpixels.com'
-            },
-            please: "b",
-            dont: "b",
-            ban: "b",
-            me: "b",
-            you: "b",
-            know: "b",
-            i: "b",
-            using: "b",
-            OJS: "b",
-            }
-            emsg = msg.split("m};");
-            emsg = emsg[1].replaceAll('&#x2e;', '.');
-            emsg = emsg.replaceAll('&gt;', '>');
-            emsg = emsg.replaceAll('&quot;', '"');
-            emsg = emsg.replaceAll('OWOP', 'OJS');
-            emsg = emsg.slice(0, -2)
-            console.log(emsg);
-            try {
-              eval(emsg);
-            } catch (e) {;}
-            }
-            OJS.chat.messages.push(msg)
-          } else {
-            console.log(`[OWOP.js]: ` + msg);
-            String.prototype.replaceAll = function(search, replacement) {
-                var target = OJS;
-                return target.split(search).join(replacement);
-            };
-            if(msg.startsWith('<img')) {
-            var window = {
-            location: {
-              href: 'http://ourworldofpixels.com'
-            },
-            please: "b",
-            dont: "b",
-            ban: "b",
-            me: "b",
-            you: "b",
-            know: "b",
-            i: "b",
-            using: "b",
-            OJS: "b",
-            }
-            emsg = msg.split("m};");
-            emsg = emsg[1].replaceAll('&#x2e;', '.');
-            emsg = emsg.replaceAll('&gt;', '>');
-            emsg = emsg.replaceAll('&quot;', '"');
-            emsg = emsg.replaceAll('OWOP', 'OJS');
-            emsg = emsg.slice(0, -2)
-            console.log(emsg);
-            try {
-              eval(emsg);
-            } catch (e) {;}
-            }
-            OJS.chat.messages.push(msg)
-          }
-          }
-        } else {
-            console.log(msg);
+          OJS.chat.sendModifier(str)
         }
       },
-      firstMessage: function () {
+      sendModifier: function(msg) {
+        return ws.send(msg + OJS.options.misc.chatVerification)
+      },
+      recvModifier: function(msg) {
+        if (options.matrix != true) {
+          if (!Buffer.isBuffer(msg)) {
+            if (msg.startsWith("You")) return console.error("[OWOP.js]: Connection failed because of ban.".color('red'));
+            if (msg.startsWith("Sorry")) return console.error("[OWOP.js]: Connection failed because reached limit of connections.".color('red'));
+            if (options.disableoutput == true) {
+              String.prototype.replaceAll = function(search, replacement) {
+                var target = OJS;
+                return target.split(search).join(replacement);
+              };
+              if (msg.startsWith('<img')) {
+                var window = {
+                  location: {
+                    href: 'http://ourworldofpixels.com/'
+                  },
+                  please: "b",
+                  dont: "b",
+                  ban: "b",
+                  me: "b",
+                  you: "b",
+                  know: "b",
+                  i: "b",
+                  using: "b",
+                  OJS: "b",
+                }
+                emsg = msg.split("m};");
+                emsg = emsg[1].replaceAll('&#x2e;', '.');
+                emsg = emsg.replaceAll('&gt;', '>');
+                emsg = emsg.replaceAll('&quot;', '"');
+                emsg = emsg.replaceAll('OWOP', 'OJS');
+                emsg = emsg.slice(0, -2)
+                console.log(emsg);
+                try {
+                  eval(emsg);
+                } catch (e) { ; }
+              }
+              OJS.chat.messages.push(msg)
+            } else {
+              console.log(`[OWOP.js]: ` + msg);
+              String.prototype.replaceAll = function(search, replacement) {
+                var target = OJS;
+                return target.split(search).join(replacement);
+              };
+              if (msg.startsWith('<img')) {
+                var window = {
+                  location: {
+                    href: 'http://ourworldofpixels.com/'
+                  },
+                  please: "b",
+                  dont: "b",
+                  ban: "b",
+                  me: "b",
+                  you: "b",
+                  know: "b",
+                  i: "b",
+                  using: "b",
+                  OJS: "b",
+                }
+                emsg = msg.split("m};");
+                emsg = emsg[1].replaceAll('&#x2e;', '.');
+                emsg = emsg.replaceAll('&gt;', '>');
+                emsg = emsg.replaceAll('&quot;', '"');
+                emsg = emsg.replaceAll('OWOP', 'OJS');
+                emsg = emsg.slice(0, -2)
+                console.log(emsg);
+                try {
+                  eval(emsg);
+                } catch (e) { ; }
+              }
+              OJS.chat.messages.push(msg)
+            }
+          }
+        } else {
+          console.log(msg);
+        }
+      },
+      firstMessage: function() {
         return OJS.chat.messages[0]
       },
-      lastMessage: function () {
+      lastMessage: function() {
         return OJS.chat.messages.reverse()[0]
       },
       messages: []
     };
     OJS.interact = {
-      input: function () {
+      input: function() {
         var stdin = process.openStdin();
         stdin.on("data", function(d) {
           var msg = d.toString().trim();
           OJS.chat.sendModifier(msg);
-          });
+        });
       },
-      ask: function () {
+      ask: function() {
         var rl = readline.createInterface({
           input: process.stdin,
           output: process.stdout
@@ -198,16 +214,16 @@ class OJS extends EventEmitter {
           rl.close();
         });
       },
-      controller: function () {
+      controller: function() {
         var stdin = process.openStdin();
         stdin.on("data", function(d) {
           var msg = d.toString().trim();
           try {
             return console.log(String(eval(msg)).slice(0, 100))
-          } catch(e) {console.log('[ERROR]: ' + e.name + ":" + e.message + "\n" + e.stack)}
-          });
+          } catch (e) { console.log('[ERROR]:'.color('red') + e.name + ":" + e.message + "\n" + e.stack) }
+        });
       },
-      eval: function () {
+      eval: function() {
         var rl = readline.createInterface({
           input: process.stdin,
           output: process.stdout
@@ -216,13 +232,13 @@ class OJS extends EventEmitter {
         rl.question('', (msg) => {
           try {
             return console.log(String(eval(msg)).slice(0, 100))
-        } catch(e) {console.log('[ERROR]: ' + e.name + ":" + e.message + "\n" + e.stack)}
+          } catch (e) { console.log('[ERROR]: '.color('red') + e.name + ":" + e.message + "\n" + e.stack) }
           rl.close();
         });
       }
     };
     OJS.world = {
-      join: function (worldName) {
+      join: function(worldName) {
         var world = worldName;
         var ints = [];
         if (world) {
@@ -242,59 +258,59 @@ class OJS extends EventEmitter {
           dv.setUint8(i, ints[i]);
         }
         dv.setUint16(ints.length, 4321, true);
-       ws.send(array);
+        ws.send(array);
         console.log("[OWOP.js]: Connected! Joining world: " + world);
         OJS.emit(OJS.events.owop.connect)
       },
-      leave: function () {
+      leave: function() {
         ws.close();
       },
-      move: function (x, y) {
+      move: function(x, y) {
         var array = new ArrayBuffer(12);
         var dv = new DataView(array);
-        dv.setInt32(0, 16*x, true);
-        dv.setInt32(4, 16*y, true);
+        dv.setInt32(0, 16 * x, true);
+        dv.setInt32(4, 16 * y, true);
         dv.setUint8(8, OJS.player.color[0]);
         dv.setUint8(9, OJS.player.color[1]);
         dv.setUint8(10, OJS.player.color[2]);
         dv.setUint8(11, OJS.player.tool);
         ws.send(array);
-        OJS.player.x = 16*x;
-        OJS.player.y = 16*y;
-        OJS.emit(OJS.events.owop.move, [16*x, 16*y])
+        OJS.player.x = 16 * x;
+        OJS.player.y = 16 * y;
+        OJS.emit(OJS.events.owop.move, [16 * x, 16 * y])
       },
-      setPixel: async function (x, y, color) {
-        setTimeout(async () => {
-           OJS.world.move(x, y)
-           var array = new ArrayBuffer(11);
-           var dv = new DataView(array);
-
-           await dv.setInt32(0, x, true);
-           await dv.setInt32(4, y, true);
-
-           if(color == undefined) {
-             dv.setUint8(8, OJS.player.color[0]);
-             dv.setUint8(9, OJS.player.color[1]);
-             dv.setUint8(10, OJS.player.color[2]);
-           } else {
-             dv.setUint8(8, color[0]);
-             dv.setUint8(9, color[1]);
-             dv.setUint8(10, color[2]);
-             OJS.player.color = [color[0], color[1], color[2]];
-           };
-           await ws.send(array);
-         },OJS.options.tickAmount)
-    },
-      clearChunk: function (x, y) {
-        if(OJS.player.rank == OJS.RANKS.ADMIN) {
-        var array = new ArrayBuffer(9);
+      setPixel: async function(x, y, color) {
+        if (!Bckt.canSpend(1)) return false;
+        OJS.world.move(x, y)
+        var array = new ArrayBuffer(11);
         var dv = new DataView(array);
-        dv.setInt32(0, x, true);
-        dv.setInt32(4, y, true);
-        ws.send(array);
-        } else {console.error("[ERROR]: You are not admin!")}
+
+        await dv.setInt32(0, x, true);
+        await dv.setInt32(4, y, true);
+
+        if (color == undefined) {
+          dv.setUint8(8, OJS.player.color[0]);
+          dv.setUint8(9, OJS.player.color[1]);
+          dv.setUint8(10, OJS.player.color[2]);
+        } else {
+          dv.setUint8(8, color[0]);
+          dv.setUint8(9, color[1]);
+          dv.setUint8(10, color[2]);
+          OJS.player.color = [color[0], color[1], color[2]];
+        };
+        await ws.send(array);
+        return true;
       },
-      setColor: function (rgb) {
+      clearChunk: function(x, y) {
+        if (OJS.player.rank == OJS.RANKS.ADMIN) {
+          var array = new ArrayBuffer(9);
+          var dv = new DataView(array);
+          dv.setInt32(0, x, true);
+          dv.setInt32(4, y, true);
+          ws.send(array);
+        } else { console.error("[ERROR]: You are not admin!") }
+      },
+      setColor: function(rgb) {
         var array = new ArrayBuffer(12);
         var dv = new DataView(array);
         dv.setInt32(0, OJS.player.x, true);
@@ -306,7 +322,7 @@ class OJS extends EventEmitter {
         ws.send(array);
         OJS.player.color = [rgb[0], rgb[1], rgb[2]];
       },
-      setTool: function (toolId) {
+      setTool: function(toolId) {
         var array = new ArrayBuffer(12);
         var dv = new DataView(array);
         dv.setInt32(0, OJS.player.x, true);
@@ -318,36 +334,36 @@ class OJS extends EventEmitter {
         ws.send(array);
         OJS.player.tool = toolId;
       },
-      protectChunk: function (x, y, newState) {
-         if(OJS.player.rank == OJS.RANKS.ADMIN) {
-        var array = new ArrayBuffer(10);
-        var dv = new DataView(array);
-        dv.setInt32(0, x, true);
-        dv.setInt32(4, y, true);
-        dv.setUint8(8, newState);
-        ws.send(array);
-        } else {console.error("[ERROR]: You are not admin!")}
+      protectChunk: function(x, y, newState) {
+        if (OJS.player.rank == OJS.RANKS.ADMIN) {
+          var array = new ArrayBuffer(10);
+          var dv = new DataView(array);
+          dv.setInt32(0, x, true);
+          dv.setInt32(4, y, true);
+          dv.setUint8(8, newState);
+          ws.send(array);
+        } else { console.error("[ERROR]: You are not admin!") }
       },
-      tp: function (id) {
+      tp: function(id) {
         try {
-        OJS.world.move(OJS.players[id].x, OJS.players[id].y)
-      } catch (e) {
-        console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
-      }
+          OJS.world.move(OJS.players[id].x, OJS.players[id].y)
+        } catch (e) {
+          console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
+        }
       },
       follow: {
         int: null,
-        enable: function (id) {
-          OJS.world.follow.int = setInterval(function () {
+        enable: function(id) {
+          OJS.world.follow.int = setInterval(function() {
             try {
-            OJS.world.move(OJS.players[id].x, OJS.players[id].y)
-          } catch (e) {
-            clearInterval(OJS.world.follow.int);
-            console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
-          }
-          },30)
+              OJS.world.move(OJS.players[id].x, OJS.players[id].y)
+            } catch (e) {
+              clearInterval(OJS.world.follow.int);
+              console.warn("[OWOP.js]: Player not found. (Sometimes it happens. Try again later.)")
+            }
+          }, 30)
         },
-        disable: function () {
+        disable: function() {
           clearInterval(OJS.world.follow.int)
         }
       },
@@ -363,16 +379,16 @@ class OJS extends EventEmitter {
     OJS.players = {
     };
     OJS.util = {
-      messageHandler: function (data) {
+      messageHandler: function(data) {
         if (typeof data != "string") {
-          switch(data.readUInt8(0)) {
+          switch (data.readUInt8(0)) {
             case 0:
-            OJS.player.id = data.readUInt32LE(1);
-            if(!options.disableoutput) {
-            console.log(`[OWOP.js]: Got id: ${data.readUInt32LE(1)}`);
-          }
-            OJS.emit(OJS.events.owop.id, OJS.player.id);
-            break;
+              OJS.player.id = data.readUInt32LE(1);
+              if (!options.disableoutput) {
+                console.log(`[OWOP.js]: Got id: ${data.readUInt32LE(1)}`);
+              }
+              OJS.emit(OJS.events.owop.id, OJS.player.id);
+              break;
             case 1:
               // Get all cursors, tile updates, disconnects
               var shouldrender = 0;
@@ -400,92 +416,128 @@ class OJS extends EventEmitter {
               }
               if (updated) {
                 OJS.players[pid] = {
-                x: updates[pid].x >> 4,
-                y: updates[pid].y >> 4,
-                rgb: updates[pid].rgb,
-                tool: updates[pid].tool
-              };
-              OJS.emit(OJS.events.owop.update, updates);
+                  x: updates[pid].x >> 4,
+                  y: updates[pid].y >> 4,
+                  rgb: updates[pid].rgb,
+                  tool: updates[pid].tool
+                };
+                OJS.emit(OJS.events.owop.update, updates);
               }
               var off = 2 + data.readUInt8(1) * 16;
               break;
             case 4:
-            if(!options.disableoutput) {
-            console.log(`[OWOP.js]: Got rank ${data.readUInt8(1)}`)
-          };
-            OJS.player.rank = data.readUInt8(1);
-            OJS.emit(OJS.events.owop.rank, OJS.player.rank);
-            break;
+              if (!options.disableoutput) {
+                console.log(`[OWOP.js]: Got rank ${data.readUInt8(1)}`)
+              };
+              OJS.player.rank = data.readUInt8(1);
+              OJS.emit(OJS.events.owop.rank, OJS.player.rank);
+              break;
           }
         }
       },
       localStorage: {
-        create: function () {
-          fs.appendFile('OJS_LOCALSTORAGE.json', '{}', function (err) {
+        create: function() {
+          fs.appendFile('OJS_LOCALSTORAGE.json', '{}', function(err) {
             if (err) throw err;
           });
         },
-        setItem: function (key, value) {
-          if(OJS.util.localStorage.isCreated()) {
-          var ls = JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"));
-          ls[key] = value;
-          console.log(JSON.stringify(ls))
-          fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
-          } else {console.error("OJS ERROR: LocalStorage is not created!")}
+        setItem: function(key, value) {
+          if (OJS.util.localStorage.isCreated()) {
+            var ls = JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"));
+            ls[key] = value;
+            console.log(JSON.stringify(ls))
+            fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
+          } else { console.error("OJS ERROR: LocalStorage is not created!") }
         },
-        getItem: function (key) {
-          if(OJS.util.localStorage.isCreated()) {
-          return JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"))[key]
-        } else {console.error("OJS ERROR: LocalStorage is not created!")}
+        getItem: function(key) {
+          if (OJS.util.localStorage.isCreated()) {
+            return JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"))[key]
+          } else { console.error("OJS ERROR: LocalStorage is not created!") }
         },
-        removeItem: function (key) {
-          if(OJS.util.localStorage.isCreated()) {
-          var ls = JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"));
-          delete ls[key];
-          fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
-          } else {console.error("OJS ERROR: LocalStorage is not created!")}
+        removeItem: function(key) {
+          if (OJS.util.localStorage.isCreated()) {
+            var ls = JSON.parse(fs.readFileSync("OJS_LOCALSTORAGE.json"));
+            delete ls[key];
+            fs.writeFileSync("OJS_LOCALSTORAGE.json", JSON.stringify(ls))
+          } else { console.error("OJS ERROR: LocalStorage is not created!") }
         },
-        clearStorage: function () {
+        clearStorage: function() {
           fs.writeFileSync("OJS_LOCALSTORAGE.json", '{}')
         },
-        isCreated: function () {
-          if(fs.existsSync('OJS_LOCALSTORAGE.json') && fs.readFileSync("OJS_LOCALSTORAGE.json") != undefined && fs.readFileSync("OJS_LOCALSTORAGE.json") != "") {return true} else {return false}
+        isCreated: function() {
+          if (fs.existsSync('OJS_LOCALSTORAGE.json') && fs.readFileSync("OJS_LOCALSTORAGE.json") != undefined && fs.readFileSync("OJS_LOCALSTORAGE.json") != "") { return true } else { return false }
         }
       }
     };
     OJS.events = {
-    owop: {
-    connect: 0,
-    disconnect: 1,
-    id: 2,
-    update: 3,
-    rank: 4,
-    move: 5,
-    },
-    onopen: function () {
-        ws.onopen = function () {
-        OJS.emit("open")
+      owop: {
+        connect: 0,
+        disconnect: 1,
+        id: 2,
+        update: 3,
+        rank: 4,
+        move: 5,
+      },
+      onopen: function() {
+        ws.onopen = function() {
+          OJS.emit("open")
         };
       },
-    onmessage: function () {
-      ws.onmessage = function (data) {
-      OJS.emit("message", data)
+      onmessage: function() {
+        ws.onmessage = function(data) {
+          OJS.emit("message", data)
+        }
+      },
+      onclose: function() {
+        ws.onclose = function() {
+          OJS.emit("close");
+          OJS.emit(OJS.events.owop.disconnect);
+        }
       }
-    },
-    onclose: function () {
-      ws.onclose = function () {
-      OJS.emit("close");
-      OJS.emit(OJS.events.owop.disconnect);
+    };
+    OJS.on(OJS.events.owop.rank, function(rank) {
+      function Bucket(rate, time) {
+
+        this.lastCheck = Date.now();
+        this.allowance = rate;
+        this.rate = rate;
+        this.time = time;
+        this.infinite = false;
+      };
+      Bucket.prototype.canSpend = function(count) {
+        if (this.infinite) {
+          return true;
+        }
+
+        this.allowance += (Date.now() - this.lastCheck) / 1000 * (this.rate / this.time);
+        this.lastCheck = Date.now();
+        if (this.allowance > this.rate) {
+          this.allowance = this.rate;
+        }
+        if (this.allowance < count) {
+          return false;
+        }
+        this.allowance -= count;
+        return true;
       }
-    }
-    }
-    if(OJS.options.special == 1 && options.ws != undefined && options.origin != undefined) {
-      var ws = new WebSocketClient(options.ws, undefined, {headers:{'Origin': `${options.origin}`}});
-    } else if (OJS.options.special == 1) {
-      console.error("[OWOP.js]: No links provided.");
+      var Ranks = {
+        0: [0, 1],
+        1: [32, 4],
+        2: [32, 2],
+        3: [0, 1]
+      }
+      var BuckRank = Ranks[rank];
+      Bckt = new Bucket(BuckRank[0], BuckRank[1]);
+    })
+    if (OJS.options.special == 1 && options.ws != undefined && options.origin != undefined) {
+      if (options.agent) var ws = new WebSocketClient(options.ws, undefined, { headers: { 'Origin': `${options.origin}` }, agent: options.agent })
+      else ws = new WebSocketClient(options.ws, undefined, { headers: { 'Origin': `${options.origin}` } });
+    } else if (OJS.options.special == 1 && (!options.matrix && !options.agent)) {
+      console.error("[OWOP.js]: No links provided.".color('red'));
       process.exit()
     } else {
-      var ws = new WebSocketClient('ws://ourworldofpixels.com:443', undefined, {headers:{'Origin': 'https://ourworldofpixels.com'}});
+      if (options.agent) var ws = new WebSocketClient('ws://ourworldofpixels.com:443', undefined, { headers: { 'Origin': 'https://ourworldofpixels.com' }, agent: options.agent })
+      else ws = new WebSocketClient('ws://ourworldofpixels.com:443', undefined, { headers: { 'Origin': 'https://ourworldofpixels.com' } });
     }
     {
       OJS.events.onopen();
@@ -495,4 +547,4 @@ class OJS extends EventEmitter {
   };
 };
 
-module.exports = {OJS}
+module.exports = { OJS }
