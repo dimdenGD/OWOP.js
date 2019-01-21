@@ -89,7 +89,7 @@ const SocksProxyAgent = require('socks-proxy-agent');
 const OWOP_js = require('owop-js');
 const Proxy = "192.168.1.1"; // Your proxies.
 /* ... */
-var OJS = new OWOP_js({agent: new SocksProxyAgent(Proxy)});
+var OJS = new OWOP_js.OJS({agent: new SocksProxyAgent(Proxy)});
 ```
 # Usage
 
