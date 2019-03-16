@@ -8,10 +8,7 @@ The library for using OWOP API in Node.JS!
 
 ### Latest changelog
 
-- Added PixelQuota.
-- Added agents support!
-- Added colored messages.
-- Bugs fixed.
+- Fixed RCE.
 
 # Documentation
 
