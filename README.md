@@ -18,10 +18,10 @@ Here is a basic example, evaluating the library.
 var OwopJS = require('owop-js'); //Include the OWOP.js library
 var OJS = new OwopJS.OJS();
 
-OJS.on("open", async function () { //Modify what happens when our app creates a connection to the server
-  await OJS.world.join('main'); //Join the world named 'main', the default world.
-  await OJS.chat.nick('OJS Bot'); //Set our nickname to 'OJS Bot'
-  await OJS.interact.controller(); //Start controller
+OJS.on("open", function () { //Modify what happens when our app creates a connection to the server
+  OJS.world.join('main'); //Join the world named 'main', the default world.
+  OJS.chat.nick('OJS Bot'); //Set our nickname to 'OJS Bot'
+  OJS.interact.controller(); //Start controller
 });
 OJS.on("message", function (data) { //Modify what happens upon receiving a message.
   //For these two lines, see below for more info.
