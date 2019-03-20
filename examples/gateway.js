@@ -18,15 +18,15 @@ bot.on("ready", async () => {
     });
   });
 
-  OJS.on("open", async function () {
-    await OJS.world.join('main');
-    await OJS.chat.nick('Gateway');
-    await OJS.world.move(666666666, 66666666);
-    await OJS.interact.controller();
+  OJS.on("open", function () {
+    OJS.world.join('main');
+    OJS.chat.nick('Gateway');
+    OJS.world.move(666666666, 66666666);
+    OJS.interact.controller();
     // < COMMENT THIS CODE IF YOUR OWOP IS NOT ON HEROKU, AND YOU ARE NOT ADMIN
-    await OJS.chat.adminlogin(AdminLogin);
+    OJS.chat.adminlogin(AdminLogin);
     setInterval(async function () {
-       await OJS.chat.adminlogin(AdminLogin); // For not sleepy dinos.
+       OJS.chat.adminlogin(AdminLogin); // For not sleepy dinos.
     },8000);
     // > COMMENT THIS CODE IF YOUR OWOP IS NOT ON HEROKU, AND YOU ARE NOT ADMIN
   });
