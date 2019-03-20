@@ -3,10 +3,10 @@
 var OwopJS = require('owop-js');
 var OJS = new OwopJS.OJS();
 
-OJS.on("open", async function () {
-  await OJS.world.join('main');
-  await OJS.chat.nick('dimden')
-  await OJS.interact.controller();
+OJS.on("open", function () {
+  OJS.world.join('main');
+  OJS.chat.nick('dimden')
+  OJS.interact.controller();
 });
 OJS.on("message", function (data) {
   OJS.chat.recvModifier(data.data)
