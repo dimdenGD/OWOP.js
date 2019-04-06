@@ -487,7 +487,7 @@
 
 /*
   OWOP.js for browser by DIMDEN
-  It has EVERYTHING that you need for your Node OWOP Bot.
+  It has EVERYTHING that you need for your OWOP Bot.
   I hope you enjoy!
 
   GitHub: https://github.com/dimdenGD/OWOP.js
