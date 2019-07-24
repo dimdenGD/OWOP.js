@@ -574,7 +574,7 @@ var OJS = class extends EventEmitter {
                 9: 'protect'
             },
             misc: {
-                worldVerification: 4321,
+                worldVerification: 25565,
                 chatVerification: String.fromCharCode(10),
                 tokenVerification: 'CaptchA'
             },
@@ -614,7 +614,7 @@ var OJS = class extends EventEmitter {
                 for (let i = ints.length; i--;) {
                     dv.setUint8(i, ints[i]);
                 }
-                dv.setUint16(ints.length, 4321, true);
+                dv.setUint16(ints.length, OJS.options.misc.worldVerification, true);
                 OJS.ws.send(array);
                 OJS.utils.log("Joining world: " + world);
                 OJS.emit(OJS.events.CONNECT);
