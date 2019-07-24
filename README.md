@@ -8,7 +8,7 @@ The library for using OWOP API in Node.JS!
 
 ### Latest changelog
 
-- Fixed RCE.
+- Fixed protocol change.
 
 # Documentation
 
