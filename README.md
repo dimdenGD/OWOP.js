@@ -1,6 +1,6 @@
 ![OJSLogo](https://dimden.tk/OJS.png)
 
-# VERSION <1.2.0 IS OUTDATED.
+# VERSION <=1.2.0 IS OUTDATED.
 
 # OWOP.js | OJS
 
