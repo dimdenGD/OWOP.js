@@ -1,6 +1,7 @@
-![OJSLogo](https://dimden.tk/OJS.png)
 
-# VERSION <=1.2.0 IS OUTDATED.
+# **THIS REPO IS OUTDATED.**
+
+**New repo and lib - [OWOP.js_v2](https://github.com/dimdenGD/OWOP.js_v2)**
 
 # OWOP.js | OJS
 
